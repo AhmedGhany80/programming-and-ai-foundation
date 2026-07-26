@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 	<title>اختبار أساسيات البرمجة | م/ أحمد عبدالغني</title>
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -32,6 +32,9 @@
 
        html, body{
     height: 100%;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
 }
 
        body{
@@ -41,6 +44,14 @@
     -webkit-user-select:none;
     overflow:hidden;
     height: 100dvh;
+    margin: 0;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    box-sizing: border-box;
+}
+
+       *, *::before, *::after{
+    box-sizing: border-box;
 }
         .exam-card{
     background:white;
@@ -198,6 +209,10 @@
         }
         .btn-pulse {
             animation: pulse-btn 2s infinite;
+        }
+
+        .exam-footer{
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
         }
     </style>
 </head>
@@ -741,11 +756,11 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                         </div>
                     </main>
 
-                    <footer className="bg-white p-3 sm:p-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 flex justify-between items-center h-16 sm:h-20 flex-shrink-0 gap-2">
+                    <footer className="exam-footer bg-white px-3 sm:px-4 pt-3 sm:pt-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 flex justify-between items-center min-h-[64px] sm:min-h-[80px] flex-shrink-0 gap-2">
                         <button 
                             onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
                             disabled={currentQuestionIndex === 0}
-                            className="px-3 sm:px-6 py-2 border-2 border-gray-300 text-gray-600 font-bold rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm sm:text-base"
+                            className={`px-3 sm:px-6 py-2 border-2 font-bold rounded transition text-sm sm:text-base flex-shrink-0 ${currentQuestionIndex === 0 ? 'border-gray-200 text-gray-400 cursor-not-allowed' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
                         >
                             السابق
                         </button>
@@ -760,14 +775,14 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                         {currentQuestionIndex === questionsData.length - 1 ? (
                             <button 
                                 onClick={finishExam}
-                                className="px-4 sm:px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 text-sm sm:text-base"
+                                className="px-4 sm:px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 text-sm sm:text-base flex-shrink-0"
                             >
                                 إنهاء الامتحان
                             </button>
                         ) : (
                             <button 
                                 onClick={() => setCurrentQuestionIndex(prev => Math.min(questionsData.length - 1, prev + 1))}
-                                className="px-4 sm:px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow hover:shadow-md transition text-sm sm:text-base"
+                                className="px-4 sm:px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow hover:shadow-md transition text-sm sm:text-base flex-shrink-0"
                             >
                                 التالي
                             </button>
