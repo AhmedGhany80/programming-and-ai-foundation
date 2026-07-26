@@ -30,12 +30,17 @@
     --border:#E2E8F0;
 }
 
+       html, body{
+    height: 100%;
+}
+
        body{
     font-family:'Cairo',sans-serif;
     background:linear-gradient(135deg,#F8FAFC,#EEF5FF);
     user-select:none;
     -webkit-user-select:none;
     overflow:hidden;
+    height: 100dvh;
 }
         .exam-card{
     background:white;
@@ -45,7 +50,7 @@
 
 .exam-title{
 
-    font-size:55px;
+    font-size:clamp(28px, 7vw, 55px);
 
     font-weight:900;
 
@@ -57,7 +62,7 @@
 
     color:#64748B;
 
-    font-size:22px;
+    font-size:clamp(15px, 3vw, 22px);
 
 }
 
@@ -156,6 +161,34 @@
     height:100%;
 
 }
+
+        /* Mobile question navigator (dots) */
+        .mobile-qnav{
+            display:flex;
+            gap:6px;
+            overflow-x:auto;
+            padding:8px 12px;
+            background:white;
+            border-bottom:1px solid #E2E8F0;
+            -webkit-overflow-scrolling:touch;
+        }
+        .mobile-qnav::-webkit-scrollbar{ height:4px; }
+
+        @media (max-width: 767px){
+            .welcome-instructor{
+                position: static !important;
+                border-right: none !important;
+                border-bottom: 4px solid #0056b3;
+                padding: 0 0 10px 0 !important;
+                text-align: center !important;
+                margin-bottom: 24px;
+            }
+            .start-cta{
+                padding: 16px 32px !important;
+                font-size: 20px !important;
+                width: 100% !important;
+            }
+        }
         
         /* تأثير النبض للزر */
         @keyframes pulse-btn {
@@ -485,48 +518,48 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
             // --- 1. WELCOME SCREEN ---
             if (!hasStarted) {
                 return (
-                    <div className="flex flex-col items-center justify-center h-screen bg-gray-50 relative animate-fade-in p-6">
+                    <div className="flex flex-col items-center justify-center h-full bg-gray-50 relative animate-fade-in p-4 sm:p-6 overflow-y-auto">
                         {/* Instructor Name - Right Side */}
-                        <div className="absolute top-8 right-8 md:top-12 md:right-16 text-right border-r-4 border-[#0056b3] pr-4">
-                            <p className="text-gray-500 text-sm font-semibold mb-1">إعداد وإشراف</p>
-                            <h2 className="text-3xl md:text-4xl font-black text-gray-800">م/ أحمد عبدالغني</h2>
+                        <div className="welcome-instructor absolute top-6 right-6 md:top-12 md:right-16 text-right border-r-4 border-[#0056b3] pr-4">
+                            <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-1">إعداد وإشراف</p>
+                            <h2 className="text-xl sm:text-3xl md:text-4xl font-black text-gray-800">م/ أحمد عبدالغني</h2>
                         </div>
 
                         {/* Center Content */}
-                        <div className="text-center max-w-lg w-full">
-                            <div className="mb-12">
-                                <div className="inline-block p-4 rounded-full bg-blue-50 mb-6 border border-blue-100">
-                                    <i className="fa-solid fa-laptop-code text-5xl text-[#0056b3]"></i>
+                        <div className="text-center max-w-lg w-full mt-24 md:mt-0">
+                            <div className="mb-8 md:mb-12">
+                                <div className="inline-block p-3 sm:p-4 rounded-full bg-blue-50 mb-4 sm:mb-6 border border-blue-100">
+                                    <i className="fa-solid fa-laptop-code text-3xl sm:text-5xl text-[#0056b3]"></i>
                                 </div>
-                                <h1 className="text-5xl md:text-6xl font-black text-[#0056b3] mb-4 tracking-tight">
+                                <h1 className="exam-title tracking-tight">
                                     اختبار أساسيات البرمجة
                                 </h1>
-                                <p className="text-xl text-gray-600 font-medium">
+                                <p className="exam-sub font-medium">
                                   اختبار المحاضرة الأولي
                                 </p>
                             </div>
 
-                            <div className="space-y-6">
-                                <div className="flex justify-center gap-8 text-gray-600 mb-4">
+                            <div className="space-y-5 sm:space-y-6">
+                                <div className="flex justify-center gap-6 sm:gap-8 text-gray-600 mb-2 sm:mb-4">
                                     <div className="flex flex-col items-center">
-                                        <span className="font-bold text-lg text-gray-800">{questionsData.length}</span>
-                                        <span className="text-sm">سؤال</span>
+                                        <span className="font-bold text-base sm:text-lg text-gray-800">{questionsData.length}</span>
+                                        <span className="text-xs sm:text-sm">سؤال</span>
                                     </div>
                                     <div className="w-px bg-gray-300"></div>
                                     <div className="flex flex-col items-center">
-                                        <span className="font-bold text-lg text-gray-800">15</span>
-                                        <span className="text-sm">دقيقة</span>
+                                        <span className="font-bold text-base sm:text-lg text-gray-800">15</span>
+                                        <span className="text-xs sm:text-sm">دقيقة</span>
                                     </div>
                                 </div>
 
-                                <div className="text-right max-w-xs mx-auto">
+                                <div className="text-right max-w-xs mx-auto px-2">
                                     <label className="block text-gray-600 font-bold mb-2 text-sm">اكتب اسمك قبل البدء</label>
                                     <input
                                         type="text"
                                         value={studentName}
                                         onChange={(e) => { setStudentName(e.target.value); if (nameError) setNameError(false); }}
                                         placeholder="الاسم بالكامل"
-                                        className={`w-full p-3 rounded-lg border-2 text-lg focus:outline-none transition ${nameError ? 'border-red-400' : 'border-gray-200 focus:border-[#0056b3]'}`}
+                                        className={`w-full p-3 rounded-lg border-2 text-base sm:text-lg focus:outline-none transition ${nameError ? 'border-red-400' : 'border-gray-200 focus:border-[#0056b3]'}`}
                                     />
                                     {nameError && (
                                         <p className="text-red-500 text-sm mt-1">من فضلك اكتب اسمك أولاً</p>
@@ -541,11 +574,11 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                                         }
                                         setHasStarted(true);
                                     }}
-                                    className="btn-pulse bg-[#0056b3] text-white text-2xl font-bold py-4 px-16 rounded-full hover:bg-blue-700 transition transform hover:scale-105 shadow-xl w-full md:w-auto"
+                                    className="start-cta btn-pulse bg-[#0056b3] text-white text-lg sm:text-2xl font-bold py-3 sm:py-4 px-10 sm:px-16 rounded-full hover:bg-blue-700 transition transform hover:scale-105 shadow-xl w-full md:w-auto"
                                 >
                                     ابــدأ الآن
                                 </button>
-                                <p className="text-gray-400 text-sm mt-4">
+                                <p className="text-gray-400 text-xs sm:text-sm mt-4">
                                     بالضغط على "ابدأ"، سيبدأ العداد التنازلي مباشرة.
                                 </p>
                             </div>
@@ -570,13 +603,13 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                 }
 
                 return (
-                    <div className="flex flex-col items-center justify-center h-full bg-gray-50 p-6 animate-fade-in overflow-y-auto">
-                        <div className="bg-white p-8 rounded-lg shadow-xl text-center max-w-2xl w-full border-t-8 border-[#0056b3] my-6">
-                            <h1 className="text-4xl font-bold mb-1 text-[#0056b3]">نتيجة الاختبار</h1>
+                    <div className="flex flex-col items-center justify-center h-full bg-gray-50 p-3 sm:p-6 animate-fade-in overflow-y-auto">
+                        <div className="bg-white p-4 sm:p-8 rounded-lg shadow-xl text-center max-w-2xl w-full border-t-8 border-[#0056b3] my-4 sm:my-6">
+                            <h1 className="text-2xl sm:text-4xl font-bold mb-1 text-[#0056b3]">نتيجة الاختبار</h1>
                             {studentName && (
-                                <p className="text-gray-500 font-semibold mb-4">{studentName}</p>
+                                <p className="text-gray-500 font-semibold mb-4 break-words">{studentName}</p>
                             )}
-                            <div className="text-6xl font-bold mb-6 text-gray-800">
+                            <div className="text-4xl sm:text-6xl font-bold mb-6 text-gray-800">
                                 {scoreData.score} / {questionsData.length}
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-4 mb-6">
@@ -585,7 +618,7 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                                     style={{width: `${scoreData.percentage}%`}}
                                 ></div>
                             </div>
-                            <p className={`text-xl font-semibold mb-8 ${colorClass}`}>
+                            <p className={`text-lg sm:text-xl font-semibold mb-8 ${colorClass}`}>
                                 {message}
                             </p>
                             
@@ -612,7 +645,7 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
 
                             <button 
                                 onClick={() => window.location.reload()}
-                                className="mt-6 px-8 py-3 bg-[#0056b3] text-white rounded hover:bg-blue-700 transition font-bold"
+                                className="mt-6 px-6 sm:px-8 py-3 bg-[#0056b3] text-white rounded hover:bg-blue-700 transition font-bold w-full sm:w-auto"
                             >
                                 العودة للصفحة الرئيسية
                             </button>
@@ -625,60 +658,61 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
 
             // --- 3. EXAM INTERFACE ---
             return (
-                <div className="flex flex-col h-full relative animate-fade-in">
-                    <header className="flex justify-between items-center p-4 shadow-sm border-b bg-white z-10 h-16">
-                        <div className="flex items-center gap-4">
-                            <div className="bg-[#0056b3] text-white font-bold px-3 py-1 rounded text-sm">
+                <div className="flex flex-col h-full relative animate-fade-in overflow-hidden">
+                    <header className="flex justify-between items-center p-3 sm:p-4 shadow-sm border-b bg-white z-10 h-14 sm:h-16 flex-shrink-0">
+                        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+                            <div className="bg-[#0056b3] text-white font-bold px-2 sm:px-3 py-1 rounded text-xs sm:text-sm whitespace-nowrap">
                                اختبار المحاضرة الاولي
                             </div>
-                            <div className="font-bold text-gray-700 hidden sm:block">م/ أحمد عبدالغني</div>
-                        </div>
-                        
-                        <div className="hidden md:flex gap-1 overflow-x-auto px-4 nav-scroll">
-                            {questionsData.map((_, idx) => (
-                                <button
-                                    key={idx}
-                                    onClick={() => setCurrentQuestionIndex(idx)}
-                                    className={`w-8 h-8 rounded flex items-center justify-center text-sm font-bold transition-all flex-shrink-0
-                                        ${currentQuestionIndex === idx ? 'ring-2 ring-[#0056b3] ring-offset-1' : ''}
-                                        ${flagged[idx] ? 'bg-orange-100 text-orange-600 border border-orange-400' : 
-                                          answers[idx] !== undefined ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-500'}
-                                    `}
-                                >
-                                    {idx + 1}
-                                </button>
-                            ))}
+                            <div className="font-bold text-gray-700 hidden sm:block truncate">م/ أحمد عبدالغني</div>
                         </div>
 
-                        <div className={`font-mono text-xl font-bold w-24 text-center ${timeLeft < 300 ? 'text-red-600 animate-pulse' : 'text-gray-700'}`}>
+                        <div className={`font-mono text-lg sm:text-xl font-bold w-20 sm:w-24 text-center flex-shrink-0 ${timeLeft < 300 ? 'text-red-600 animate-pulse' : 'text-gray-700'}`}>
                             {formatTime(timeLeft)}
                         </div>
                     </header>
 
+                    {/* Question navigator dots - visible on all screen sizes, scrollable on mobile */}
+                    <div className="mobile-qnav flex-shrink-0">
+                        {questionsData.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setCurrentQuestionIndex(idx)}
+                                className={`w-8 h-8 rounded flex items-center justify-center text-sm font-bold transition-all flex-shrink-0
+                                    ${currentQuestionIndex === idx ? 'ring-2 ring-[#0056b3] ring-offset-1' : ''}
+                                    ${flagged[idx] ? 'bg-orange-100 text-orange-600 border border-orange-400' : 
+                                      answers[idx] !== undefined ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-gray-100 text-gray-500'}
+                                `}
+                            >
+                                {idx + 1}
+                            </button>
+                        ))}
+                    </div>
+
                     <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-gray-50">
-                        <div className="flex-1 overflow-y-auto p-4 md:p-8 pb-24">
-                            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border p-6 min-h-[400px]">
-                                <div className="flex justify-between items-start mb-6">
-                                    <span className="text-gray-500 font-bold text-lg">سؤال {currentQuestionIndex + 1} من {questionsData.length}</span>
+                        <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-8 pb-24">
+                            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm border p-4 sm:p-6 min-h-[300px] sm:min-h-[400px]">
+                                <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
+                                    <span className="text-gray-500 font-bold text-sm sm:text-lg">سؤال {currentQuestionIndex + 1} من {questionsData.length}</span>
                                     <button 
                                         onClick={toggleFlag}
-                                        className={`flex items-center gap-2 px-3 py-1 rounded border transition ${flagged[currentQuestionIndex] ? 'bg-orange-50 border-orange-400 text-orange-600' : 'text-gray-400 border-gray-200 hover:bg-gray-50'}`}
+                                        className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 rounded border transition text-xs sm:text-sm flex-shrink-0 ${flagged[currentQuestionIndex] ? 'bg-orange-50 border-orange-400 text-orange-600' : 'text-gray-400 border-gray-200 hover:bg-gray-50'}`}
                                     >
                                         <i className={`fa-solid fa-flag ${flagged[currentQuestionIndex] ? 'text-orange-500' : ''}`}></i>
-                                        <span className="text-sm font-bold">مراجعة لاحقاً</span>
+                                        <span className="font-bold hidden xs:inline">مراجعة لاحقاً</span>
                                     </button>
                                 </div>
 
-                                <h2 className="text-xl font-bold text-gray-800 mb-8 border-r-4 border-[#0056b3] pr-4">
+                                <h2 className="text-base sm:text-xl font-bold text-gray-800 mb-5 sm:mb-8 border-r-4 border-[#0056b3] pr-3 sm:pr-4">
                                     {currentQuestion.question}
                                 </h2>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                                     {currentQuestion.options.map((opt, idx) => (
                                         <label 
                                             key={idx}
                                             className={`
-                                                relative flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 group
+                                                relative flex items-center p-3 sm:p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 group
                                                 ${answers[currentQuestionIndex] === idx 
                                                     ? 'border-[#0056b3] bg-blue-50 shadow-md' 
                                                     : 'border-gray-200 hover:border-gray-300 bg-white'}
@@ -692,14 +726,14 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                                                 onChange={() => handleAnswerSelect(idx)}
                                             />
                                             <div className={`
-                                                w-6 h-6 rounded-full border-2 ml-4 flex items-center justify-center flex-shrink-0
+                                                w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 ml-3 sm:ml-4 flex items-center justify-center flex-shrink-0
                                                 ${answers[currentQuestionIndex] === idx ? 'border-[#0056b3]' : 'border-gray-300 group-hover:border-gray-400'}
                                             `}>
                                                 {answers[currentQuestionIndex] === idx && (
-                                                    <div className="w-3 h-3 rounded-full bg-[#0056b3]"></div>
+                                                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#0056b3]"></div>
                                                 )}
                                             </div>
-                                            <span className="text-lg font-medium text-gray-700">{opt}</span>
+                                            <span className="text-sm sm:text-lg font-medium text-gray-700">{opt}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -707,11 +741,11 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                         </div>
                     </main>
 
-                    <footer className="bg-white p-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 flex justify-between items-center h-20">
+                    <footer className="bg-white p-3 sm:p-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 flex justify-between items-center h-16 sm:h-20 flex-shrink-0 gap-2">
                         <button 
                             onClick={() => setCurrentQuestionIndex(prev => Math.max(0, prev - 1))}
                             disabled={currentQuestionIndex === 0}
-                            className="px-6 py-2 border-2 border-gray-300 text-gray-600 font-bold rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                            className="px-3 sm:px-6 py-2 border-2 border-gray-300 text-gray-600 font-bold rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition text-sm sm:text-base"
                         >
                             السابق
                         </button>
@@ -726,14 +760,14 @@ rationale:"التفكير المنطقي هو أساس حل المشكلات ا�
                         {currentQuestionIndex === questionsData.length - 1 ? (
                             <button 
                                 onClick={finishExam}
-                                className="px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5"
+                                className="px-4 sm:px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 text-sm sm:text-base"
                             >
                                 إنهاء الامتحان
                             </button>
                         ) : (
                             <button 
                                 onClick={() => setCurrentQuestionIndex(prev => Math.min(questionsData.length - 1, prev + 1))}
-                                className="px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow hover:shadow-md transition"
+                                className="px-4 sm:px-8 py-2 bg-[#0056b3] text-white font-bold rounded hover:bg-blue-700 shadow hover:shadow-md transition text-sm sm:text-base"
                             >
                                 التالي
                             </button>
